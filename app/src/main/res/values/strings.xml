@@ -17,6 +17,8 @@
 
     <!-- Overview -->
     <string name="server_stopped">Server stopped</string>
+    <string name="castiqq_how_to">On your iPhone or iPad, open Control Center, tap Screen Mirroring and pick %1$s.</string>
+    <string name="castiqq_type_pin">Type this code on your iPhone or iPad</string>
     <string name="waiting_for_connection">Waiting for connection...</string>
     <string name="waiting_for_playback">Press start on the sender...</string>
     <string name="error_starting_server">Error starting server</string>

@@ -554,14 +554,7 @@ fun MainScreen(
         AlertDialog(
             onDismissRequest = { viewModel.dismissPin() },
             title = { Text(stringResource(R.string.dialog_pin_title)) },
-            text = {
-                Text(
-                    text = pin!!,
-                    style = MaterialTheme.typography.displayMedium,
-                    fontWeight = FontWeight.Bold,
-                    modifier = Modifier.fillMaxWidth(),
-                )
-            },
+            text = { CastiqqPin(pin!!) },
             confirmButton = {
                 TextButton(onClick = { viewModel.dismissPin() }) { Text(stringResource(R.string.btn_ok)) }
             }
@@ -635,7 +628,9 @@ private fun OverviewContent(
                 if (state == ServerState.RUNNING && (mirroringActive || idlePreview)) {
                     video()
                 }
-                if (state != ServerState.RUNNING || connections == 0) {
+                if (state == ServerState.RUNNING && connections == 0 && !grant && !idlePreview) {
+                    CastiqqWaiting(serverName.ifBlank { deviceName(LocalContext.current) })
+                } else if (state != ServerState.RUNNING || connections == 0) {
                     Column(horizontalAlignment = Alignment.CenterHorizontally) {
                         Icon(
                             imageVector = if (connections > 0) Icons.Default.CastConnected else Icons.Default.Cast,

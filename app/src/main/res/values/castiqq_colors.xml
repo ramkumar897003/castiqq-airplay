@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Castiqq's colors (docs/brand in the Castiqq repo, and Castiqq TV's screens). -->
+    <color name="castiqq_background">#111827</color>
+</resources>

@@ -1,28 +1,55 @@
 package io.github.jqssun.airplay.ui.theme
 
-import android.os.Build
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.darkColorScheme
-import androidx.compose.material3.dynamicDarkColorScheme
-import androidx.compose.material3.dynamicLightColorScheme
-import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.graphics.Color
 
+// Castiqq's colors: the logo's blue and cyan (docs/brand in the Castiqq repo)
+// on the dark grey of Castiqq TV's screens, so this app looks like the rest.
+object Castiqq {
+    val Blue = Color(0xFF377CF2)
+    val BlueDark = Color(0xFF2053DB)
+    val Cyan = Color(0xFF8BE3FF)
+    val Focus = Color(0xFF60A5FA)
+    val Background = Color(0xFF111827)
+    val Surface = Color(0xFF1F2937)
+    val Border = Color(0xFF374151)
+    val Muted = Color(0xFF9CA3AF)
+    val Text = Color(0xFFD1D5DB)
+    val Error = Color(0xFFFCA5A5)
+}
+
+private val CastiqqColors = darkColorScheme(
+    primary = Castiqq.Blue,
+    onPrimary = Color.White,
+    primaryContainer = Castiqq.BlueDark,
+    onPrimaryContainer = Color.White,
+    secondary = Castiqq.Cyan,
+    onSecondary = Castiqq.Background,
+    secondaryContainer = Castiqq.Border,
+    onSecondaryContainer = Color.White,
+    tertiary = Castiqq.Focus,
+    onTertiary = Castiqq.Background,
+    background = Castiqq.Background,
+    onBackground = Color.White,
+    surface = Castiqq.Background,
+    onSurface = Color.White,
+    surfaceVariant = Castiqq.Surface,
+    onSurfaceVariant = Castiqq.Muted,
+    surfaceContainerLowest = Castiqq.Background,
+    surfaceContainerLow = Castiqq.Surface,
+    surfaceContainer = Castiqq.Surface,
+    surfaceContainerHigh = Castiqq.Surface,
+    surfaceContainerHighest = Castiqq.Border,
+    outline = Castiqq.Border,
+    outlineVariant = Castiqq.Border,
+    error = Castiqq.Error,
+    onError = Castiqq.Background,
+)
+
+/** Always Castiqq's dark look, whatever the system theme or wallpaper colors. */
 @Composable
-fun AirPlayTheme(
-    darkTheme: Boolean = isSystemInDarkTheme(),
-    content: @Composable () -> Unit
-) {
-    val colorScheme = when {
-        Build.VERSION.SDK_INT >= Build.VERSION_CODES.S -> {
-            val ctx = LocalContext.current
-            if (darkTheme) dynamicDarkColorScheme(ctx) else dynamicLightColorScheme(ctx)
-        }
-        darkTheme -> darkColorScheme()
-        else -> lightColorScheme()
-    }
-
-    MaterialTheme(colorScheme = colorScheme, content = content)
+fun AirPlayTheme(content: @Composable () -> Unit) {
+    MaterialTheme(colorScheme = CastiqqColors, content = content)
 }
