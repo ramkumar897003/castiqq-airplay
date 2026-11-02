@@ -18,6 +18,15 @@ android {
     compileSdk = 37
     ndkVersion = "27.0.12077973"
 
+    // Castiqq: one debug key for every build (CI's runners make a new one each
+    // time), so a new test build installs over the last without uninstalling.
+    // Debug only: store builds use the release key from local.properties.
+    signingConfigs {
+        getByName("debug") {
+            storeFile = file("castiqq-debug.keystore")
+        }
+    }
+
     if (localProps.containsKey("storeFile")) {
         signingConfigs {
             create("release") {
