@@ -50,6 +50,7 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
 import io.github.jqssun.airplay.Prefs
 import io.github.jqssun.airplay.R
+import io.github.jqssun.airplay.ui.theme.Castiqq
 import io.github.jqssun.airplay.deviceName
 import io.github.jqssun.airplay.service.AirPlayService.ServerState
 import io.github.jqssun.airplay.ui.gestures.BrightnessState
@@ -517,26 +518,35 @@ fun MainScreen(
             onPip = onPip
         )
     } else {
+        val serverState by viewModel.serverState.collectAsState()
         Scaffold(
-            bottomBar = {
-                Column {
-                    AudioMiniController(
-                        viewModel,
-                        visible = audioOnly && connections > 0 && tab != Tab.OVERVIEW,
-                        onClick = { tab = Tab.OVERVIEW }
-                    )
-                    NavigationBar {
-                        Tab.entries.forEach { t ->
-                            NavigationBarItem(
-                                selected = tab == t,
-                                onClick = { tab = t },
-                                icon = { Icon(t.icon, null) },
-                                label = { Text(stringResource(t.labelRes)) },
-                                modifier = Modifier.dpadFocus()
-                            )
+            topBar = {
+                CastiqqHeader(
+                    tabs = Tab.entries.map { stringResource(it.labelRes) },
+                    selected = tab.ordinal,
+                    onSelect = { tab = Tab.entries[it] },
+                    status = stringResource(
+                        when {
+                            serverState == ServerState.ERROR -> R.string.castiqq_problem
+                            serverState != ServerState.RUNNING -> R.string.castiqq_stopped
+                            connections > 0 -> R.string.castiqq_mirroring
+                            else -> R.string.castiqq_ready
                         }
+                    ),
+                    statusColor = when {
+                        serverState == ServerState.ERROR -> Castiqq.Error
+                        serverState != ServerState.RUNNING -> Castiqq.Muted
+                        connections > 0 -> Castiqq.Focus
+                        else -> Castiqq.Ready
                     }
-                }
+                )
+            },
+            bottomBar = {
+                AudioMiniController(
+                    viewModel,
+                    visible = audioOnly && connections > 0 && tab != Tab.OVERVIEW,
+                    onClick = { tab = Tab.OVERVIEW }
+                )
             }
         ) { padding ->
             Box(modifier = Modifier.padding(padding).consumeWindowInsets(padding)) {
@@ -609,6 +619,19 @@ private fun OverviewContent(
         if (tv) startFocus.requestFocus()
     }
 
+    // Nothing playing: Castiqq's own start screen.
+    if ((state != ServerState.RUNNING || connections == 0) && !grant && !idlePreview && !showAudioMode) {
+        val name = serverName.ifBlank { deviceName(LocalContext.current) }
+        CastiqqHome(
+            name = name,
+            status = stringResource(if (state == ServerState.RUNNING) R.string.castiqq_waiting else R.string.castiqq_off),
+            running = state == ServerState.RUNNING,
+            onStartStop = if (state == ServerState.RUNNING) viewModel::stopServer else viewModel::startServer,
+            focusRequester = startFocus
+        )
+        return
+    }
+
     Column(modifier = Modifier.fillMaxSize()) {
         // content area
         Box(
@@ -628,9 +651,7 @@ private fun OverviewContent(
                 if (state == ServerState.RUNNING && (mirroringActive || idlePreview)) {
                     video()
                 }
-                if (state == ServerState.RUNNING && connections == 0 && !grant && !idlePreview) {
-                    CastiqqWaiting(serverName.ifBlank { deviceName(LocalContext.current) })
-                } else if (state != ServerState.RUNNING || connections == 0) {
+                if (state != ServerState.RUNNING || connections == 0) {
                     Column(horizontalAlignment = Alignment.CenterHorizontally) {
                         Icon(
                             imageVector = if (connections > 0) Icons.Default.CastConnected else Icons.Default.Cast,

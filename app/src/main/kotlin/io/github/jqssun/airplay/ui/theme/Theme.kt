@@ -12,6 +12,9 @@ object Castiqq {
     val BlueDark = Color(0xFF2053DB)
     val Cyan = Color(0xFF8BE3FF)
     val Focus = Color(0xFF60A5FA)
+    /** Filled buttons and the selected tab, as in the phone and desktop apps. */
+    val Button = Color(0xFF2563EB)
+    val Ready = Color(0xFF22C55E)
     val Background = Color(0xFF111827)
     val Surface = Color(0xFF1F2937)
     val Border = Color(0xFF374151)
@@ -21,7 +24,7 @@ object Castiqq {
 }
 
 private val CastiqqColors = darkColorScheme(
-    primary = Castiqq.Blue,
+    primary = Castiqq.Button,
     onPrimary = Color.White,
     primaryContainer = Castiqq.BlueDark,
     onPrimaryContainer = Color.White,

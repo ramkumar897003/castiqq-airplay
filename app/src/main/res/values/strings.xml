@@ -17,6 +17,19 @@
 
     <!-- Overview -->
     <string name="server_stopped">Server stopped</string>
+    <string name="castiqq_this_tv">This TV</string>
+    <string name="castiqq_waiting">Waiting for an iPhone or iPad</string>
+    <string name="castiqq_off">AirPlay is off. Start it to let iPhones find this TV.</string>
+    <string name="castiqq_start">Start AirPlay</string>
+    <string name="castiqq_stop">Stop AirPlay</string>
+    <string name="castiqq_ready">Ready</string>
+    <string name="castiqq_mirroring">Mirroring</string>
+    <string name="castiqq_stopped">Off</string>
+    <string name="castiqq_problem">Problem</string>
+    <string name="castiqq_steps_title">Mirror an iPhone or iPad</string>
+    <string name="castiqq_step_1">Open Control Center</string>
+    <string name="castiqq_step_2">Tap Screen Mirroring</string>
+    <string name="castiqq_step_3">Pick %1$s</string>
     <string name="castiqq_how_to">On your iPhone or iPad, open Control Center, tap Screen Mirroring and pick %1$s.</string>
     <string name="castiqq_type_pin">Type this code on your iPhone or iPad</string>
     <string name="waiting_for_connection">Waiting for connection...</string>
