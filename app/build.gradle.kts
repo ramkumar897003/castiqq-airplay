@@ -53,10 +53,18 @@ android {
         }
     }
 
-    externalNativeBuild {
-        cmake {
-            path = file("src/main/cpp/CMakeLists.txt")
+    // Castiqq: -PprebuiltNative=<folder with lib/<abi>/*.so taken from a CI build>
+    // builds the app around those instead of compiling UxPlay, OpenSSL and
+    // FFmpeg, which only build on Linux and macOS. For trying UI changes on Windows.
+    val prebuiltNative = providers.gradleProperty("prebuiltNative").orNull
+    if (prebuiltNative == null) {
+        externalNativeBuild {
+            cmake {
+                path = file("src/main/cpp/CMakeLists.txt")
+            }
         }
+    } else {
+        sourceSets["main"].jniLibs.srcDir(prebuiltNative)
     }
 
     buildTypes {

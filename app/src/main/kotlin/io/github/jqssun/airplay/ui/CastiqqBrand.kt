@@ -76,6 +76,8 @@ fun CastiqqButton(
     modifier: Modifier = Modifier,
     primary: Boolean = false,
     selected: Boolean = false,
+    /** A tab in the header's switch: no outline until focused. */
+    tab: Boolean = false,
     focusRequester: FocusRequester? = null,
 ) {
     val interaction = remember { MutableInteractionSource() }
@@ -89,6 +91,7 @@ fun CastiqqButton(
     val border = when {
         focused -> Castiqq.Focus
         primary || selected -> Castiqq.Button
+        tab -> Color.Transparent
         else -> Castiqq.Border
     }
     Box(
@@ -129,7 +132,7 @@ fun CastiqqHeader(
                 horizontalArrangement = Arrangement.spacedBy(4.dp)
             ) {
                 tabs.forEachIndexed { i, label ->
-                    CastiqqButton(label, onClick = { onSelect(i) }, selected = i == selected)
+                    CastiqqButton(label, onClick = { onSelect(i) }, selected = i == selected, tab = true)
                 }
             }
             Spacer(Modifier.weight(1f))
